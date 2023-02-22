@@ -2,8 +2,7 @@
 
 A work in progress project demonstrating a smooth and responsive 2D player controller with features such variable jump height, coyote time jumping, and jump buffering.
 
-
-<img src="https://user-images.githubusercontent.com/66329929/220478595-5471f265-acdd-4025-a17d-d25eeca622dd.gif" width="400" />
+<img src="https://user-images.githubusercontent.com/66329929/220491231-b28b9164-7004-4724-93d1-3a9396c38c2f.gif" width="400" />
 
 #### Once the game is finished, the link to play will be posted here.
 
