@@ -41,7 +41,19 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+
+
         Move();
+        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            squashStretcheAnimator.SetTrigger("Crouch");
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            squashStretcheAnimator.SetTrigger("Stand");
+        }
+        
         grounded = isGrounded();
         Jump();
         Flip();
