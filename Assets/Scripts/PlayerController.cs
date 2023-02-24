@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private float jump = 900;
     private bool isJumping;
     private bool grounded;
+    private bool alive = true;
+
 
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
@@ -28,6 +30,8 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask bounds;
+
 
     [SerializeField] private Rigidbody2D RB;
     [SerializeField] private SpriteRenderer sprite;
@@ -40,7 +44,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
 
 
         Move();
@@ -74,9 +77,10 @@ public class PlayerController : MonoBehaviour
         sprite.flipX = !isFacingRight;
     }
 
+
     private bool isGrounded()
     {
-        //bool result = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+        //bool result = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, bounds);
         bool result = Physics2D.OverlapCircle(groundCheck.position, 0.2f, jumpableGround);
 
         if (result)
@@ -93,6 +97,10 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         direction = Input.GetAxis("Horizontal");
+        if(direction == 1 || direction == -1)
+        {
+            gameObject.transform.SetParent(null);
+        }
         float speedDif = maxSpeed * direction - RB.velocity.x;
         float movement = speedDif * accelRate;
         RB.AddForce(movement * Vector2.right);
@@ -147,8 +155,6 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
-
 
 
 }
