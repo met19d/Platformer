@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Guardian : MonoBehaviour
+public class KillZone : MonoBehaviour
 {
     [SerializeField] private int Respawn;
 
@@ -11,7 +11,13 @@ public class Guardian : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(Respawn);
+            StartCoroutine(LoadingScene());
         }
+    }
+
+    private IEnumerator LoadingScene()
+    {
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(Respawn);
     }
 }

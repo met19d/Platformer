@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Rigidbody2D RB;
     [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private ParticleSystem deathAnimation;
+    private bool once = true;
+    
 
 
     void Start()
@@ -45,23 +48,45 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+        if(alive)
+        {
+            Move();
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                squashStretcheAnimator.SetTrigger("Crouch");
+                coll.size = coll.size / 2;
+                coll.offset = new Vector2(coll.offset.x, coll.offset.y - 0.5f);
 
-        Move();
-        
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            squashStretcheAnimator.SetTrigger("Crouch");
+            }
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                squashStretcheAnimator.SetTrigger("Stand");
+                coll.size = coll.size * 2;
+                coll.offset = new Vector2(coll.offset.x, coll.offset.y + 0.5f);
+            }
+
+            grounded = isGrounded();
+            Jump();
+            Flip();
         }
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            squashStretcheAnimator.SetTrigger("Stand");
-        }
-        
-        grounded = isGrounded();
-        Jump();
-        Flip();
+
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Respawn") && once)
+        {
+            alive = false;
+            var em = deathAnimation.emission;
+            var dur = deathAnimation.duration;
+
+            em.enabled = true;
+            once = false;
+            deathAnimation.Play();
+            Destroy(sprite);
+            Destroy(RB);
+        }
+    }
 
     private void Flip()
     {
