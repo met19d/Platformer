@@ -1,6 +1,6 @@
 # 2D Platformer
 
-A work in progress project demonstrating a smooth and responsive 2D player controller with features such as variable jump height, coyote time, and jump buffering.
+A work in progress project demonstrating a smooth and responsive 2D player controller with basic platormer mechanics and obstacles
 
 ## Development Progress:
 <img src="https://user-images.githubusercontent.com/66329929/221675779-d25bdc55-3b29-4087-ab85-23262934bc12.gif" width="400" />
