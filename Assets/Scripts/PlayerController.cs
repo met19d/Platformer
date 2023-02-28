@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private bool grounded;
     private bool alive = true;
 
-
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = 0.5f;
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D RB;
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private ParticleSystem deathAnimation;
-    private bool once = true;
+
     
 
 
@@ -74,17 +73,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Respawn") && once)
+        if (other.CompareTag("Respawn") && alive)
         {
             alive = false;
             var em = deathAnimation.emission;
-            var dur = deathAnimation.duration;
 
             em.enabled = true;
-            once = false;
             deathAnimation.Play();
             Destroy(sprite);
             Destroy(RB);
+        }
+
+        if (other.CompareTag("Bounce"))
+        {
+            squashStretcheAnimator.SetTrigger("Jump");
         }
     }
 
