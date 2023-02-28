@@ -25,16 +25,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float accelRate = 0.5f;
     [SerializeField] private float fallSpeed = 350;
 
+    [SerializeField] private ParticleSystem deathAnimation;
     [SerializeField] private Animator squashStretcheAnimator;
-    
+
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask bounds;
 
-
     [SerializeField] private Rigidbody2D RB;
     [SerializeField] private SpriteRenderer sprite;
-    [SerializeField] private ParticleSystem deathAnimation;
+    
 
     
 
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
                 squashStretcheAnimator.SetTrigger("Crouch");
                 coll.size = coll.size / 2;
                 coll.offset = new Vector2(coll.offset.x, coll.offset.y - 0.5f);
+                maxSpeed = 5;
 
             }
             if (Input.GetKeyUp(KeyCode.S))
@@ -62,9 +63,10 @@ public class PlayerController : MonoBehaviour
                 squashStretcheAnimator.SetTrigger("Stand");
                 coll.size = coll.size * 2;
                 coll.offset = new Vector2(coll.offset.x, coll.offset.y + 0.5f);
+                maxSpeed = 15;
             }
 
-            grounded = isGrounded();
+            grounded = IsGrounded();
             Jump();
             Flip();
         }
@@ -105,17 +107,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private bool isGrounded()
+    private bool IsGrounded()
     {
-        //bool result = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, bounds);
         bool result = Physics2D.OverlapCircle(groundCheck.position, 0.2f, jumpableGround);
 
-        if (result)
+        if (result && !grounded)
         {
-            if (grounded == false)
-            {
                 squashStretcheAnimator.SetTrigger("Landing");
-            }
         }
         return result;
     }
