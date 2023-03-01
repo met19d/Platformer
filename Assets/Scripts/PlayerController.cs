@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private float direction;
     private float jump = 900;
     private bool isJumping;
+    private bool isCrouching;
     private bool grounded;
     private bool alive = true;
 
@@ -50,21 +51,7 @@ public class PlayerController : MonoBehaviour
         if(alive)
         {
             Move();
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                squashStretcheAnimator.SetTrigger("Crouch");
-                coll.size = coll.size / 2;
-                coll.offset = new Vector2(coll.offset.x, coll.offset.y - 0.5f);
-                maxSpeed = 5;
 
-            }
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                squashStretcheAnimator.SetTrigger("Stand");
-                coll.size = coll.size * 2;
-                coll.offset = new Vector2(coll.offset.x, coll.offset.y + 0.5f);
-                maxSpeed = 15;
-            }
 
             grounded = IsGrounded();
             Jump();
@@ -111,7 +98,7 @@ public class PlayerController : MonoBehaviour
     {
         bool result = Physics2D.OverlapCircle(groundCheck.position, 0.2f, jumpableGround);
 
-        if (result && !grounded)
+        if (result && !grounded && !isCrouching)
         {
                 squashStretcheAnimator.SetTrigger("Landing");
         }
@@ -121,6 +108,27 @@ public class PlayerController : MonoBehaviour
     #region Horizontal Movement
     private void Move()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            squashStretcheAnimator.SetTrigger("Crouch");
+            coll.size = coll.size / 2;
+            coll.offset = new Vector2(coll.offset.x, coll.offset.y - 0.5f);
+            isCrouching = true;
+        }
+        if(isCrouching && grounded)
+        {
+            maxSpeed = 5;
+        }
+
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            squashStretcheAnimator.SetTrigger("Stand");
+            coll.size = coll.size * 2;
+            coll.offset = new Vector2(coll.offset.x, coll.offset.y + 0.5f);
+            maxSpeed = 15;
+            isCrouching = false;
+        }
+
         direction = Input.GetAxis("Horizontal");
         if(direction == 1 || direction == -1)
         {
@@ -134,7 +142,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Jump
-
     private void Jump()
     {
         if (grounded)

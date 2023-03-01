@@ -34,7 +34,7 @@ public class MovePlatform : MonoBehaviour
         collision.transform.SetParent(transform);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void  OnCollisionExit2D(Collision2D collision)
     {
         collision.transform.SetParent(null);
     }
