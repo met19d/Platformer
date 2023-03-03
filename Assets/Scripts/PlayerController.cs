@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Rigidbody2D RB;
     [SerializeField] private SpriteRenderer sprite;
+
+    public AudioClip deathSFX;
     
 
     
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
             em.enabled = true;
             deathAnimation.Play();
+            AudioSource.PlayClipAtPoint(deathSFX, transform.position);
             Destroy(sprite);
             Destroy(RB);
         }
